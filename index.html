@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            background-color: black;
+        }
+        a{    text-decoration: none;
+              color: white;
+              cursor: pointer;
+            
+        }
+
+        .container {
+            width: 1500px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .input-box {
+            width: 500px;
+            margin: auto;
+            padding: 50px 0;
+
+        }
+
+        input {
+            width: 500px;
+            padding: 15px 20px;
+            border-radius: 100px;
+            border: none;
+            background-color: rgb(208, 208, 208);
+            outline: none;
+            font-size: 20px;
+        }
+
+        .card {
+            width: 300px;
+            height: 400px;
+            overflow: hidden;
+            order: 1000;
+            border-radius: 10px;
+        }
+
+        .card>img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            background-color: white;
+            width: 100%;
+            border-radius: 10px;
+            padding: 20px 10px 10px 10px;
+            transform: translateY(0);
+            transition: 500ms ease;
+
+        }
+
+        .card:hover .overlay {
+            transform: translateY(-100%);
+        }
+
+        .rating {
+            padding: 10px 0;
+            font-weight: bold;
+            color: gold;
+        }
+
+        .overlay>h3 {
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="go"><a href="home.html"><h1>GO HOME</h1></a></div>
+    <div class="input-box">
+        <input type="text" placeholder="Enter Movie Name....">
+    </div>
+    <div class="container">
+        
+
+    </div>
+    <script>
+
+        const APIURL = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1";
+        const IMGPATH = "https://image.tmdb.org/t/p/w1280";
+        const SEARCHAPI ="https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=";
+
+        var cardContainer = document.querySelector(".container")
+
+        async function movieCard(API) {
+            var response = await fetch(API)
+            var data = await response.json()
+            movies = data.results            
+            movies.sort((a, b) => b.vote_average - a.vote_average)
+            printmovie(movies)
+            
+        }
+
+        function printmovie(movies){
+            cardContainer.innerHTML=""
+            for (var movie of movies) {
+                var card = document.createElement("div")
+                card.classList.add("card")
+                card.innerHTML = `
+                <img src="${IMGPATH+movie.poster_path}" alt="Movie Thumbnail">
+            <div class="overlay">
+                <h3>${movie.original_title}</h3>
+                <p>${movie.overview}</p>
+                    <p class="rating">${movie.vote_average}</p>
+                    </div>`
+                cardContainer.appendChild(card)
+            }
+        }
+
+        document.querySelector(".input-box input" ).addEventListener(
+            'keyup',
+            function(event){
+                if(event.target.value == "")
+            {
+                movieCard(APIURL)
+            }
+            else{
+                movieCard(SEARCHAPI+event.target.value)
+            }
+            }
+        )
+
+            
+        movieCard(APIURL)
+
+
+    </script>
+</body>
+
+</html>

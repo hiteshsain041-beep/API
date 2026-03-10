@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{background-color: rgb(13, 172, 224);}
+
+        a{    text-decoration: none;
+              color: white;
+              cursor: pointer;
+            
+        }
+        .container {
+            width: 500px;
+            margin: 20px auto;
+            /* border: 2px solid red; */
+            height: 330px;
+            background-color: aqua;
+        }
+
+        input {
+            margin: auto;
+            display: block;
+            width: 70%;
+            padding: 10px 20px;
+            border: 1px solid black;
+            border-radius: 10px;
+            outline: none;
+            font-size: 16px;
+            
+            
+        }
+        .input{
+        padding-top: 15px;
+        }
+
+        h1 {
+            margin: auto;
+            margin-top: 20px;
+            margin-top: 50px;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: rgb(10, 29, 236);
+            font-weight: bold;
+            font-size: 40px;
+        }
+
+    </style>
+</head>
+
+<body><div class="go"><a href="home.html"><h1>GO HOME</h1></a></div>
+    <div class="container">
+       <div class="input"> <input type="text" placeholder="Enter city....."></div>
+        <h1></h1>
+        <h2> </h2>
+    </div>
+        <script>
+
+            var city = ""
+
+
+            var input = document.querySelector("input")
+            var temprature = document.querySelector("h1")
+            var country = document.querySelector("h2")
+
+            document.querySelector("input").addEventListener(
+                'keyup',
+                function (event) {
+                    city = event.target.value
+                    if (event.key == "Enter") {
+                        weather()
+                    }
+                }
+            )
+
+            async function weather() {
+
+                if (city.trim() == "") return
+
+                let APIKey = '9e1ac06a6f72dc48dc80d70b4f040583';
+                let APIURL =
+                    `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${APIKey}`;
+                var res = await fetch(APIURL)
+                var data = await res.json()
+
+                temprature.innerText = `${data.main.temp}°c`
+                country.innerText = data.sys.country
+
+
+
+            }
+        </script>
+    
+</body>
+
+</html>

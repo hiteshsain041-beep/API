@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Document</title>
+
+    <style>
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+body{background-color: rgb(13, 172, 224);
+width: 100%;}
+
+a{    text-decoration: none;
+      color: white;
+      cursor: pointer;
+    
+}
+
+        .container {
+            width: 600px;
+            margin: 30px 30px;
+        }
+
+        input {
+            margin-bottom: 50px;
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: lightgray;
+            outline: none;
+        }
+
+        button {
+            margin-bottom: 50px;
+            padding: 10px;
+            border: none;
+            background-color: teal;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .go{
+margin-left: 500px; 
+margin-top: 20px;
+font-size: 25px;       }
+    </style>
+</head>
+
+<body>
+    <div class="go"><a href="home.html"><h1>GO HOME</h1></a></div>
+    <div class="container">
+        <input type="text" placeholder="Enter Text....">
+        <button>Translate</button>
+        <p></p>
+    </div>
+
+    <script>
+        let text = ""
+        let url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=hi&dt=t&q=${encodeURIComponent(text)}`;
+        var input = document.querySelector("input")
+        var btn = document.querySelector("button")
+        var p = document.querySelector("p")
+
+        input.addEventListener(
+            'keyup',
+            function (event) {
+                text = event.target.value
+                if (event.key == "Enter") {
+                    translate()
+                }
+            }
+        )
+
+        btn.addEventListener(
+            'click',
+            translate
+        )
+
+        async function translate() {
+
+            url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=hi&dt=t&q=${encodeURIComponent(text)}`
+
+            let res = await fetch(url);
+            let data = await res.json();
+            p.innerText = data[0][0][0];
+        }
+
+
+    </script>
+</body>
+
+</html>
